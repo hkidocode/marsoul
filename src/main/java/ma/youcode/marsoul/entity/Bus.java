@@ -1,0 +1,50 @@
+package ma.youcode.marsoul.entity;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.sql.Date;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "bus")
+public class Bus {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_bus", nullable = false, updatable = false)
+    private Integer idBus;
+    @Column(name = "start_city")
+    private String startCity;
+    @Column(name = "city_destination")
+    private String cityDestination;
+    @Column(name = "start_agency")
+    private String startAgency;
+    @Column(name = "agency_destination")
+    private String agencyDestination;
+    @Column(name = "voyage_date")
+    private Date voyageDate;
+    @Column(name = "start_hour")
+    private Time startHour;
+    @Column(name = "end_hour")
+    private Time endHour;
+    @Column(name = "empty_places")
+    private Integer emptyPlaces;
+    @ManyToMany
+    @JoinTable(name = "user_bus",
+            joinColumns = @JoinColumn(name = "id_bus"),
+            inverseJoinColumns = @JoinColumn(name = "id_person"))
+    private List<Person> people = new ArrayList<>();
+    @ManyToOne(targetEntity = Society.class)
+    private Society society;
+    @OneToMany(targetEntity = Voyage.class)
+    private List<Voyage> voyages = new ArrayList<>();
+
+}
