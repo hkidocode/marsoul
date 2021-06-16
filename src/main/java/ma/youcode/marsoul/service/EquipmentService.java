@@ -2,6 +2,7 @@ package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Bus;
 import ma.youcode.marsoul.entity.Equipment;
+import ma.youcode.marsoul.exception.EquipmentNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

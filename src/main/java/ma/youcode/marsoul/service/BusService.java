@@ -1,6 +1,7 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Bus;
+import ma.youcode.marsoul.exception.BusNotExistException;
 import ma.youcode.marsoul.repository.BusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

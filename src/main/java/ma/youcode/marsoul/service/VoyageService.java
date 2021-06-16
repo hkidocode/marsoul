@@ -1,6 +1,7 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Voyage;
+import ma.youcode.marsoul.exception.VoyageNotExistException;
 import ma.youcode.marsoul.repository.VoyageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

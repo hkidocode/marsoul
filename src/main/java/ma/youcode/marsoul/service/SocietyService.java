@@ -1,6 +1,7 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Society;
+import ma.youcode.marsoul.exception.SocietyNotExistException;
 import ma.youcode.marsoul.repository.SocietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
