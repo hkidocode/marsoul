@@ -1,6 +1,5 @@
 package ma.youcode.marsoul.service;
 
-import ma.youcode.marsoul.entity.Bus;
 import ma.youcode.marsoul.entity.Equipment;
 import ma.youcode.marsoul.exception.EquipmentNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
@@ -16,11 +15,8 @@ public class EquipmentService {
     private EquipmentRepository equipmentRepository;
 
     public Equipment getById(Integer equipmentId) {
-        if (equipmentRepository.findById(equipmentId).isPresent()) {
-            return equipmentRepository.findById(equipmentId).get();
-        } else {
-            throw new EquipmentNotExistException("Equipment entity does not exist");
-        }
+        return equipmentRepository.findById(equipmentId)
+                .orElseThrow(() -> new EquipmentNotExistException("Equipment entity does not exist"));
     }
 
     public List<Equipment> getAll() {

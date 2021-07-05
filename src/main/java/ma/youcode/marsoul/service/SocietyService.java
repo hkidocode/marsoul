@@ -15,11 +15,8 @@ public class SocietyService {
     private SocietyRepository societyRepository;
 
     public Society getById(Integer societyId) {
-        if (societyRepository.findById(societyId).isPresent()) {
-            return societyRepository.findById(societyId).get();
-        } else {
-            throw new SocietyNotExistException("Society entity does not exist");
-        }
+        return societyRepository.findById(societyId)
+                .orElseThrow(() -> new SocietyNotExistException("Society entity does not exist"));
     }
 
     public List<Society> getAll() {

@@ -15,11 +15,8 @@ public class BusService {
     private BusRepository busRepository;
 
     public Bus getById(Integer busId) {
-        if (busRepository.findById(busId).isPresent()) {
-            return busRepository.findById(busId).get();
-        } else {
-            throw new BusNotExistException("Bus entity does not exist");
-        }
+        return  busRepository.findById(busId)
+                .orElseThrow(() -> new BusNotExistException("Bus entity does not exist"));
     }
 
     public List<Bus> getAll() {

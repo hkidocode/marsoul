@@ -15,11 +15,8 @@ public class VoyageService {
     private VoyageRepository voyageRepository;
 
     public Voyage getById(Long voyageId) {
-        if (voyageRepository.findById(voyageId).isPresent()) {
-            return voyageRepository.findById(voyageId).get();
-        } else {
-            throw new VoyageNotExistException("Voyage entity does not exist");
-        }
+        return voyageRepository.findById(voyageId)
+                .orElseThrow(() -> new VoyageNotExistException("Voyage entity does not exist"));
     }
 
     public List<Voyage> getAll() {
