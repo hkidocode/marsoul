@@ -1,5 +1,5 @@
 package ma.youcode.marsoul.entity;
 
 public enum UserRole {
-    USER, MANAGER, ADMIN
+    USER, DRIVER, MANAGER, ADMIN,
 }

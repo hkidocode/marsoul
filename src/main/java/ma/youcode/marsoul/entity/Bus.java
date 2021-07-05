@@ -1,5 +1,6 @@
 package ma.youcode.marsoul.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "bus")
 public class Bus {
@@ -46,5 +48,7 @@ public class Bus {
     private Society society;
     @OneToMany(targetEntity = Voyage.class)
     private List<Voyage> voyages = new ArrayList<>();
+    @OneToMany(targetEntity = Equipment.class)
+    private List<Equipment> equipments = new ArrayList<>();
 
 }

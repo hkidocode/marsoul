@@ -44,7 +44,7 @@ public class VoyageController {
     }
 
     @DeleteMapping("{voyageId}")
-    public ResponseEntity<Object> deleteVoyage(@PathVariable Long voyageId) {
+    public ResponseEntity<HttpStatus> deleteVoyage(@PathVariable Long voyageId) {
         voyageService.deleteById(voyageId);
         return ResponseEntity.noContent().build();
     }

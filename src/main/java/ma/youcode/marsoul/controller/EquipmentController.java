@@ -44,7 +44,7 @@ public class EquipmentController {
     }
 
     @DeleteMapping("{equipmentId}")
-    public ResponseEntity<Object> deleteEquipment(@PathVariable Integer equipmentId) {
+    public ResponseEntity<HttpStatus> deleteEquipment(@PathVariable Integer equipmentId) {
         equipmentService.deleteById(equipmentId);
         return ResponseEntity.noContent().build();
     }

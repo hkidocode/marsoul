@@ -44,7 +44,7 @@ public class SocietyController {
     }
 
     @DeleteMapping("{societyId}")
-    public ResponseEntity<Object> deleteSociety(@PathVariable Integer societyId) {
+    public ResponseEntity<HttpStatus> deleteSociety(@PathVariable Integer societyId) {
         societyService.deleteById(societyId);
         return ResponseEntity.noContent().build();
     }

@@ -44,7 +44,7 @@ public class BusController {
     }
 
     @DeleteMapping("{busId}")
-    public ResponseEntity<Object> deleteVoyage(@PathVariable Integer busId) {
+    public ResponseEntity<HttpStatus> deleteVoyage(@PathVariable Integer busId) {
         busService.deleteById(busId);
         return ResponseEntity.noContent().build();
     }
