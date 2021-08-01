@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ma.youcode.marsoul.entity.UserRole;
+import ma.youcode.marsoul.enums.UserRole;
 
 @Data
 @AllArgsConstructor
