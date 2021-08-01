@@ -3,31 +3,40 @@ package ma.youcode.marsoul.service;
 import ma.youcode.marsoul.entity.Equipment;
 import ma.youcode.marsoul.exception.EquipmentNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
+import ma.youcode.marsoul.service.impl.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class EquipmentService {
+public class EquipmentServiceImpl implements EquipmentService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
 
-    public Equipment getById(Integer equipmentId) {
+    @Override
+    public Equipment getEquipmentById(Integer equipmentId) {
         return equipmentRepository.findById(equipmentId)
                 .orElseThrow(() -> new EquipmentNotExistException("Equipment entity does not exist"));
     }
 
-    public List<Equipment> getAll() {
+    @Override
+    public List<Equipment> getAllEquipments() {
         return equipmentRepository.findAll();
     }
 
-    public Equipment addOrUpdate(Equipment equipment) {
+    @Override
+    public Equipment saveEquipment(Equipment equipment) {
         return equipmentRepository.save(equipment);
     }
 
-    public void deleteById(Integer equipmentId) {
+    @Override
+    public Equipment updateEquipment(Integer equipmentId, Equipment equipment) {
+        return equipmentRepository.save(equipment);
+    }
+
+    @Override
+    public void deleteEquipmentById(Integer equipmentId) {
         if (equipmentRepository.findById(equipmentId).isPresent()) {
             equipmentRepository.deleteById(equipmentId);
         } else {

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.sql.Timestamp;
 import java.util.Map;
 
-@JsonInclude(JsonInclude.Include.NON_NULL) // does not show nullable attributes
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
     private int status;
     private Timestamp timestamp;

@@ -3,31 +3,39 @@ package ma.youcode.marsoul.service;
 import ma.youcode.marsoul.entity.Society;
 import ma.youcode.marsoul.exception.SocietyNotExistException;
 import ma.youcode.marsoul.repository.SocietyRepository;
+import ma.youcode.marsoul.service.impl.SocietyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
-public class SocietyService {
+public class SocietyServiceImpl implements SocietyService {
 
     @Autowired
     private SocietyRepository societyRepository;
 
-    public Society getById(Integer societyId) {
+    @Override
+    public Society getSocietyById(Integer societyId) {
         return societyRepository.findById(societyId)
                 .orElseThrow(() -> new SocietyNotExistException("Society entity does not exist"));
     }
 
-    public List<Society> getAll() {
+    @Override
+    public List<Society> getAllSocieties() {
         return societyRepository.findAll();
     }
 
-    public Society addOrUpdate(Society society) {
+    @Override
+    public Society saveSociety(Society society) {
         return societyRepository.save(society);
     }
 
-    public void deleteById(Integer societyId) {
+    @Override
+    public Society updateSociety(Integer societyId, Society society) {
+        return societyRepository.save(society);
+    }
+
+    @Override
+    public void deleteSocietyById(Integer societyId) {
         if (societyRepository.findById(societyId).isPresent()) {
             societyRepository.deleteById(societyId);
         } else {
