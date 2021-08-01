@@ -10,6 +10,7 @@ public interface UserService {
     User getUserById(Long personId);
     List<User> getAllUsers();
     User saveUser(User user);
+    void saveRoleToUser(String email, String roleName);
     User updateUser(Long personId, User user);
     void deleteUserById(Long personId);
 
