@@ -15,7 +15,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "society")
-public class Society {
+public class Society extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

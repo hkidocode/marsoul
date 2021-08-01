@@ -13,7 +13,7 @@ import javax.persistence.*;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "voyage")
-public class Voyage {
+public class Voyage extends AuditModel{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
