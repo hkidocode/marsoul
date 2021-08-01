@@ -1,4 +1,4 @@
-package ma.youcode.marsoul.exception;
+package ma.youcode.marsoul.message;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
