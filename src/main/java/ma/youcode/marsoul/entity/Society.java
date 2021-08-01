@@ -30,4 +30,9 @@ public class Society {
     @JoinColumn(name = "id_user")
     private List<Person> people = new ArrayList<>();
 
+    public Society(String name, List<Bus> buses) {
+        this.name = name;
+        this.busCount = buses.size();
+        this.buses = buses;
+    }
 }

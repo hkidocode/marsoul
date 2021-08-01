@@ -1,7 +1,8 @@
 package ma.youcode.marsoul.controller;
 
+import ma.youcode.marsoul.dto.EquipmentDTO;
 import ma.youcode.marsoul.entity.Equipment;
-import ma.youcode.marsoul.exception.VoyageNotExistException;
+import ma.youcode.marsoul.mapper.EquipmentMapper;
 import ma.youcode.marsoul.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,29 +19,31 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
+    @Autowired
+    private EquipmentMapper equipmentMapper;
+
     @GetMapping
-    public ResponseEntity<List<Equipment>> getAllEquipments() {
-        return ResponseEntity.status(HttpStatus.OK).body(equipmentService.getAll());
+    public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
+        return ResponseEntity.status(HttpStatus.OK).body(equipmentMapper.entitiesToDTOs(equipmentService.getAll()));
     }
 
     @GetMapping("{equipmentId}")
-    public ResponseEntity<Equipment> getEquipment(@PathVariable Integer equipmentId) {
-        return ResponseEntity.status(HttpStatus.OK).body(equipmentService.getById(equipmentId));
+    public ResponseEntity<EquipmentDTO> getEquipment(@PathVariable Integer equipmentId) {
+        return ResponseEntity.status(HttpStatus.OK).body(equipmentMapper.entityToDTO(equipmentService.getById(equipmentId)));
     }
 
     @PostMapping
-    public ResponseEntity<Equipment> addEquipment(@RequestBody @Valid Equipment equipment) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(equipmentService.addOrUpdate(equipment));
+    public ResponseEntity<Equipment> addEquipment(@RequestBody @Valid EquipmentDTO equipmentDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(equipmentService.addOrUpdate(equipmentMapper.dtoToEntity(equipmentDTO)));
     }
 
     @PutMapping("{equipmentId}")
     public ResponseEntity<Equipment> updateEquipment(@PathVariable Integer equipmentId, @RequestBody @Valid Equipment equipment) {
         Equipment targetedEquipment = equipmentService.getById(equipmentId);
-        if (targetedEquipment != null) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(equipmentService.addOrUpdate(equipment));
-        } else {
-            throw new VoyageNotExistException("Equipment entity does not exist");
-        }
+        targetedEquipment.setName(equipment.getName());
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(equipmentService.addOrUpdate(targetedEquipment));
+
     }
 
     @DeleteMapping("{equipmentId}")

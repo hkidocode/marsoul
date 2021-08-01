@@ -24,7 +24,6 @@ public class BusDTO {
     private Time startHour;
     private Time endHour;
     private SocietyDTO society;
-    private List<PersonDTO> people = new ArrayList<>();
     private List<EquipmentDTO> equipments = new ArrayList<>();
 
 }

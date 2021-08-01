@@ -1,7 +1,8 @@
 package ma.youcode.marsoul.controller;
 
+import ma.youcode.marsoul.dto.SocietyDTO;
 import ma.youcode.marsoul.entity.Society;
-import ma.youcode.marsoul.exception.VoyageNotExistException;
+import ma.youcode.marsoul.mapper.SocietyMapper;
 import ma.youcode.marsoul.service.SocietyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,29 +19,33 @@ public class SocietyController {
     @Autowired
     private SocietyService societyService;
 
+    @Autowired
+    private SocietyMapper societyMapper;
+
     @GetMapping
-    public ResponseEntity<List<Society>> getAllSocieties() {
-        return ResponseEntity.status(HttpStatus.OK).body(societyService.getAll());
+    public ResponseEntity<List<SocietyDTO>> getAllSocieties() {
+        return ResponseEntity.status(HttpStatus.OK).body(societyMapper.entitiesToDTOs(societyService.getAll()));
     }
 
     @GetMapping("{societyId}")
-    public ResponseEntity<Society> getSociety(@PathVariable Integer societyId) {
-        return ResponseEntity.status(HttpStatus.OK).body(societyService.getById(societyId));
+    public ResponseEntity<SocietyDTO> getSociety(@PathVariable Integer societyId) {
+        return ResponseEntity.status(HttpStatus.OK).body(societyMapper.entityToDTO(societyService.getById(societyId)));
     }
 
     @PostMapping
-    public ResponseEntity<Society> addSociety(@RequestBody @Valid Society society) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(societyService.addOrUpdate(society));
+    public ResponseEntity<Society> addSociety(@RequestBody @Valid SocietyDTO societyDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(societyService.addOrUpdate(societyMapper.dtoToEntity(societyDTO)));
     }
 
     @PutMapping("{societyId}")
     public ResponseEntity<Society> updateSociety(@PathVariable Integer societyId, @RequestBody @Valid Society society) {
         Society targetedSociety = societyService.getById(societyId);
-        if (targetedSociety != null) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(societyService.addOrUpdate(society));
-        } else {
-            throw new VoyageNotExistException("Person entity does not exist");
-        }
+        targetedSociety.setName(society.getName());
+        targetedSociety.setBuses(society.getBuses());
+        targetedSociety.setBusCount(society.getBuses().size());
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(societyService.addOrUpdate(society));
+
     }
 
     @DeleteMapping("{societyId}")

@@ -1,7 +1,8 @@
 package ma.youcode.marsoul.controller;
 
+import ma.youcode.marsoul.dto.VoyageDTO;
 import ma.youcode.marsoul.entity.Voyage;
-import ma.youcode.marsoul.exception.VoyageNotExistException;
+import ma.youcode.marsoul.mapper.VoyageMapper;
 import ma.youcode.marsoul.service.VoyageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,29 +19,32 @@ public class VoyageController {
     @Autowired
     private VoyageService voyageService;
 
+    @Autowired
+    private VoyageMapper voyageMapper;
+
     @GetMapping
-    public ResponseEntity<List<Voyage>> getAllVoyages() {
-        return ResponseEntity.status(HttpStatus.OK).body(voyageService.getAll());
+    public ResponseEntity<List<VoyageDTO>> getAllVoyages() {
+        return ResponseEntity.status(HttpStatus.OK).body(voyageMapper.entitiesToDTOs(voyageService.getAll()));
     }
 
     @GetMapping("{voyageId}")
-    public ResponseEntity<Voyage> getVoyage(@PathVariable Long voyageId) {
-        return ResponseEntity.status(HttpStatus.OK).body(voyageService.getById(voyageId));
+    public ResponseEntity<VoyageDTO> getVoyage(@PathVariable Long voyageId) {
+        return ResponseEntity.status(HttpStatus.OK).body(voyageMapper.entityToDTO(voyageService.getById(voyageId)));
     }
 
     @PostMapping
-    public ResponseEntity<Voyage> addVoyage(@RequestBody @Valid Voyage voyage) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(voyageService.addOrUpdate(voyage));
+    public ResponseEntity<Voyage> addVoyage(@RequestBody @Valid VoyageDTO voyageDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(voyageService.addOrUpdate(voyageMapper.dtoToEntity(voyageDTO)));
     }
 
     @PutMapping("{voyageId}")
     public ResponseEntity<Voyage> updateVoyage(@PathVariable Long voyageId, @RequestBody @Valid Voyage voyage) {
         Voyage targetedVoyage = voyageService.getById(voyageId);
-        if (targetedVoyage != null) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(voyageService.addOrUpdate(voyage));
-        } else {
-            throw new VoyageNotExistException("Person entity does not exist");
-        }
+        targetedVoyage.setSeatPosition(voyage.getSeatPosition());
+        targetedVoyage.setStatus(voyage.getStatus());
+
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(voyageService.addOrUpdate(voyage));
+    
     }
 
     @DeleteMapping("{voyageId}")

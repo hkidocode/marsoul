@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ma.youcode.marsoul.entity.UserRole;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +14,9 @@ public class PersonDTO {
 
     private String firstName;
     private String lastName;
+    private UserRole role;
     private String phone;
+    private String email;
+    private String password;
 
 }

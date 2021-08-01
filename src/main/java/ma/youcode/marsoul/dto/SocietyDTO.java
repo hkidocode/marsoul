@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class SocietyDTO {
 
     private String name;
-    private Integer busCount;
+    private List<BusDTO> buses = new ArrayList<>();
+
 
 }
