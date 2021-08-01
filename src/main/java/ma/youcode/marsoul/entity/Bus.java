@@ -2,8 +2,9 @@ package ma.youcode.marsoul.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -11,12 +12,13 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "bus")
+@Table(name = "buses")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Bus extends AuditModel {
 
     @Id
@@ -39,11 +41,6 @@ public class Bus extends AuditModel {
     private Time endHour;
     @Column(name = "empty_places")
     private Integer emptyPlaces;
-    @ManyToMany
-    @JoinTable(name = "user_bus",
-            joinColumns = @JoinColumn(name = "id_bus"),
-            inverseJoinColumns = @JoinColumn(name = "id_person"))
-    private List<Person> people = new ArrayList<>();
     @ManyToOne(targetEntity = Society.class)
     private Society society;
     @OneToMany(targetEntity = Voyage.class)

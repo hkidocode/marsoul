@@ -1,20 +1,19 @@
 package ma.youcode.marsoul.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "society")
+@Table(name = "societies")
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Society extends AuditModel {
 
     @Id
@@ -26,9 +25,9 @@ public class Society extends AuditModel {
     private Integer busCount;
     @OneToMany(mappedBy = "society")
     private List<Bus> buses = new ArrayList<>();
-    @OneToMany(targetEntity = Person.class)
-    @JoinColumn(name = "id_user")
-    private List<Person> people = new ArrayList<>();
+    @OneToMany(targetEntity = User.class)
+    @JoinColumn(name = "user_id")
+    private List<User> people = new ArrayList<>();
 
     public Society(String name, List<Bus> buses) {
         this.name = name;

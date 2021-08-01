@@ -2,38 +2,45 @@ package ma.youcode.marsoul.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ma.youcode.marsoul.enums.UserRole;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
-@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "person")
-public class Person extends AuditModel {
+@Table(name = "users")
+public class User extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "person_id", nullable = false, updatable = false)
+    @Column(name = "user_id", nullable = false, updatable = false)
     private Long id;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
     private String phone;
-    private UserRole role;
     private String email;
     private String password;
     @ManyToMany
+    @JoinTable(name = "user_role",
+            joinColumns = @JoinColumn(name = "role_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Collection<Role> roles = new HashSet<>();
+    @ManyToMany
     @JoinTable(name = "user_bus",
-            joinColumns = @JoinColumn(name = "id_person"),
-            inverseJoinColumns = @JoinColumn(name = "id_bus"))
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "bus_id"))
     private List<Bus> buses = new ArrayList<>();
 
 }

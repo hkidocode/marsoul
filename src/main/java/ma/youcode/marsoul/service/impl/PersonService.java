@@ -1,16 +1,16 @@
 package ma.youcode.marsoul.service.impl;
 
-import ma.youcode.marsoul.entity.Person;
+import ma.youcode.marsoul.entity.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface PersonService {
-    Person getPersonById(Long personId);
-    List<Person> getAllPersons();
-    Person savePerson(Person person);
-    Person updatePerson(Long personId, Person person);
+    User getPersonById(Long personId);
+    List<User> getAllPersons();
+    User savePerson(User user);
+    User updatePerson(Long personId, User user);
     void deletePersonById(Long personId);
 
 }

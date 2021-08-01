@@ -1,6 +1,6 @@
 package ma.youcode.marsoul.service;
 
-import ma.youcode.marsoul.entity.Person;
+import ma.youcode.marsoul.entity.User;
 import ma.youcode.marsoul.exception.PersonExistException;
 import ma.youcode.marsoul.exception.PersonNotExistException;
 import ma.youcode.marsoul.repository.PersonRepository;
@@ -17,36 +17,36 @@ public class PersonServiceImpl implements PersonService {
     private PersonRepository personRepository;
 
     @Override
-    public Person getPersonById(Long personId) {
+    public User getPersonById(Long personId) {
         return personRepository.findById(personId)
                 .orElseThrow(() -> new PersonNotExistException("Person does not exist"));
     }
 
     @Override
-    public List<Person> getAllPersons() {
+    public List<User> getAllPersons() {
         return personRepository.findAll();
     }
 
     @Override
-    public Person savePerson(Person person) {
-        Optional<Person> personByEmail = personRepository.findPersonByEmail(person.getEmail());
+    public User savePerson(User user) {
+        Optional<User> personByEmail = personRepository.findPersonByEmail(user.getEmail());
         if (personByEmail.isPresent()) {
             throw new PersonExistException("Person already exist");
         }
-        return personRepository.save(person);
+        return personRepository.save(user);
     }
 
     @Override
-    public Person updatePerson(Long personId, Person person) {
-        Person targetedPerson = getPersonById(personId);
-        targetedPerson.setFirstName(person.getFirstName());
-        targetedPerson.setLastName(person.getLastName());
-        targetedPerson.setRole(person.getRole());
-        targetedPerson.setPhone(person.getPhone());
-        targetedPerson.setEmail(person.getEmail());
-        targetedPerson.setPassword(person.getPassword());
-        targetedPerson.setUpdatedAt(new Date(System.currentTimeMillis()));
-        return personRepository.save(targetedPerson);
+    public User updatePerson(Long personId, User user) {
+        User targetedUser = getPersonById(personId);
+        targetedUser.setFirstName(user.getFirstName());
+        targetedUser.setLastName(user.getLastName());
+        targetedUser.setRole(user.getRole());
+        targetedUser.setPhone(user.getPhone());
+        targetedUser.setEmail(user.getEmail());
+        targetedUser.setPassword(user.getPassword());
+        targetedUser.setUpdatedAt(new Date(System.currentTimeMillis()));
+        return personRepository.save(targetedUser);
     }
 
     @Override
