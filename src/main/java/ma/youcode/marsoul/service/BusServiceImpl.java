@@ -6,6 +6,7 @@ import ma.youcode.marsoul.repository.BusRepository;
 import ma.youcode.marsoul.service.impl.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
 
 public class BusServiceImpl implements BusService {
@@ -16,7 +17,7 @@ public class BusServiceImpl implements BusService {
     @Override
     public Bus getBusById(Integer busId) {
         return  busRepository.findById(busId)
-                    .orElseThrow(() -> new BusNotExistException("Bus entity does not exist"));
+                    .orElseThrow(() -> new BusNotExistException("Bus does not exist"));
     }
 
     @Override
@@ -31,7 +32,17 @@ public class BusServiceImpl implements BusService {
 
     @Override
     public Bus updateBus(Integer busId, Bus bus) {
-        return busRepository.save(bus);
+        Bus targetedBus = getBusById(busId);
+        targetedBus.setStartCity(bus.getStartCity());
+        targetedBus.setCityDestination(bus.getCityDestination());
+        targetedBus.setStartAgency(bus.getStartAgency());
+        targetedBus.setAgencyDestination(bus.getAgencyDestination());
+        targetedBus.setVoyageDate(bus.getVoyageDate());
+        targetedBus.setStartHour(bus.getStartHour());
+        targetedBus.setEndHour(bus.getEndHour());
+        targetedBus.setEmptyPlaces(bus.getEmptyPlaces());
+        targetedBus.setUpdatedAt(new Date(System.currentTimeMillis()));
+        return busRepository.save(targetedBus);
     }
 
     @Override
@@ -39,7 +50,7 @@ public class BusServiceImpl implements BusService {
         if (busRepository.findById(busId).isPresent()) {
             busRepository.deleteById(busId);
         } else {
-            throw new BusNotExistException("Bus entity does not exist");
+            throw new BusNotExistException("Bus does not exist");
         }
     }
 }

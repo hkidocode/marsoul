@@ -1,12 +1,15 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Society;
+import ma.youcode.marsoul.exception.SocietyExistException;
 import ma.youcode.marsoul.exception.SocietyNotExistException;
 import ma.youcode.marsoul.repository.SocietyRepository;
 import ma.youcode.marsoul.service.impl.SocietyService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class SocietyServiceImpl implements SocietyService {
 
@@ -16,7 +19,7 @@ public class SocietyServiceImpl implements SocietyService {
     @Override
     public Society getSocietyById(Integer societyId) {
         return societyRepository.findById(societyId)
-                .orElseThrow(() -> new SocietyNotExistException("Society entity does not exist"));
+                .orElseThrow(() -> new SocietyNotExistException("Society does not exist"));
     }
 
     @Override
@@ -26,12 +29,20 @@ public class SocietyServiceImpl implements SocietyService {
 
     @Override
     public Society saveSociety(Society society) {
+        Optional<Society> societyByName = societyRepository.findSocietyByName(society.getName());
+        if (societyByName.isPresent()) {
+            throw new SocietyExistException("Society already exist");
+        }
         return societyRepository.save(society);
     }
 
     @Override
     public Society updateSociety(Integer societyId, Society society) {
-        return societyRepository.save(society);
+        Society targetedSociety = getSocietyById(societyId);
+        targetedSociety.setName(society.getName());
+        targetedSociety.setBusCount(society.getBusCount());
+        targetedSociety.setUpdatedAt(new Date(System.currentTimeMillis()));
+        return societyRepository.save(targetedSociety);
     }
 
     @Override

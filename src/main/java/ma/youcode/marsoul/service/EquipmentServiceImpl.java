@@ -1,12 +1,15 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Equipment;
+import ma.youcode.marsoul.exception.EquipmentExistException;
 import ma.youcode.marsoul.exception.EquipmentNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
 import ma.youcode.marsoul.service.impl.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class EquipmentServiceImpl implements EquipmentService {
 
@@ -16,7 +19,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public Equipment getEquipmentById(Integer equipmentId) {
         return equipmentRepository.findById(equipmentId)
-                .orElseThrow(() -> new EquipmentNotExistException("Equipment entity does not exist"));
+                .orElseThrow(() -> new EquipmentNotExistException("Equipment does not exist"));
     }
 
     @Override
@@ -26,11 +29,18 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public Equipment saveEquipment(Equipment equipment) {
+        Optional<Equipment> equipmentByName = equipmentRepository.findEquipmentByName(equipment.getName());
+        if (equipmentByName.isPresent()) {
+            throw new EquipmentExistException("Equipment already exist");
+        }
         return equipmentRepository.save(equipment);
     }
 
     @Override
     public Equipment updateEquipment(Integer equipmentId, Equipment equipment) {
+        Equipment targetedEquipment = getEquipmentById(equipmentId);
+        targetedEquipment.setName(equipment.getName());
+        targetedEquipment.setUpdatedAt(new Date(System.currentTimeMillis()));
         return equipmentRepository.save(equipment);
     }
 
@@ -39,7 +49,7 @@ public class EquipmentServiceImpl implements EquipmentService {
         if (equipmentRepository.findById(equipmentId).isPresent()) {
             equipmentRepository.deleteById(equipmentId);
         } else {
-            throw new EquipmentNotExistException("Equipment entity does not exist");
+            throw new EquipmentNotExistException("Equipment does not exist");
         }
     }
 }
