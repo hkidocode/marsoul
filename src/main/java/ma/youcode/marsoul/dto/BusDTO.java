@@ -7,8 +7,6 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,6 +22,5 @@ public class BusDTO {
     private Time startHour;
     private Time endHour;
     private SocietyDTO society;
-    private List<EquipmentDTO> equipments = new ArrayList<>();
 
 }
