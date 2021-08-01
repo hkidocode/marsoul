@@ -1,8 +1,8 @@
 package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.User;
-import ma.youcode.marsoul.exception.PersonExistException;
-import ma.youcode.marsoul.exception.PersonNotExistException;
+import ma.youcode.marsoul.exception.UserExistException;
+import ma.youcode.marsoul.exception.UserNotExistException;
 import ma.youcode.marsoul.repository.UserRepository;
 import ma.youcode.marsoul.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Long personId) {
         return userRepository.findById(personId)
-                .orElseThrow(() -> new PersonNotExistException("Person does not exist"));
+                .orElseThrow(() -> new UserNotExistException("Person does not exist"));
     }
 
     @Override
@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
     public User saveUser(User user) {
         Optional<User> personByEmail = userRepository.findPersonByEmail(user.getEmail());
         if (personByEmail.isPresent()) {
-            throw new PersonExistException("Person already exist");
+            throw new UserExistException("Person already exist");
         }
         return userRepository.save(user);
     }
@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findById(personId).isPresent()) {
             userRepository.deleteById(personId);
         } else {
-            throw new PersonNotExistException("Person does not exist");
+            throw new UserNotExistException("Person does not exist");
         }
     }
 }
