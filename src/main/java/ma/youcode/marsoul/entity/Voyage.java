@@ -17,8 +17,8 @@ public class Voyage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_voyage", nullable = false, updatable = false)
-    private Long idVoyage;
+    @Column(name = "voyage_id", nullable = false, updatable = false)
+    private Long id;
     @Column(name = "seat_position")
     private Integer seatPosition;
     private VoyageStatus status;

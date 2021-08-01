@@ -19,8 +19,8 @@ public class Society {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_society", nullable = false, updatable = false)
-    private Integer idBusSociety;
+    @Column(name = "society_id", nullable = false, updatable = false)
+    private Integer id;
     private String name;
     @Column(name = "bus_count")
     private Integer busCount;

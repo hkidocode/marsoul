@@ -16,7 +16,7 @@ public class BusServiceImpl implements BusService {
     @Override
     public Bus getBusById(Integer busId) {
         return  busRepository.findById(busId)
-                .orElseThrow(() -> new BusNotExistException("Bus entity does not exist"));
+                    .orElseThrow(() -> new BusNotExistException("Bus entity does not exist"));
     }
 
     @Override

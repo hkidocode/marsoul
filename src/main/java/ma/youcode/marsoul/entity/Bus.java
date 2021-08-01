@@ -21,8 +21,8 @@ public class Bus {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_bus", nullable = false, updatable = false)
-    private Integer idBus;
+    @Column(name = "bus_id", nullable = false, updatable = false)
+    private Integer id;
     @Column(name = "start_city")
     private String startCity;
     @Column(name = "city_destination")
