@@ -41,7 +41,6 @@ public class PersonServiceImpl implements PersonService {
         User targetedUser = getPersonById(personId);
         targetedUser.setFirstName(user.getFirstName());
         targetedUser.setLastName(user.getLastName());
-        targetedUser.setRole(user.getRole());
         targetedUser.setPhone(user.getPhone());
         targetedUser.setEmail(user.getEmail());
         targetedUser.setPassword(user.getPassword());

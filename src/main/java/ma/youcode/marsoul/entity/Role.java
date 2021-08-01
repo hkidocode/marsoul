@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Role {
+public class Role extends AuditModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
