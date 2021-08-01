@@ -8,11 +8,13 @@ import ma.youcode.marsoul.repository.RoleRepository;
 import ma.youcode.marsoul.repository.UserRepository;
 import ma.youcode.marsoul.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class UserServiceImpl implements UserService {
 
     @Autowired

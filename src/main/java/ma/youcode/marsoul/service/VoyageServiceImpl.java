@@ -6,11 +6,13 @@ import ma.youcode.marsoul.exception.VoyageNotExistException;
 import ma.youcode.marsoul.repository.VoyageRepository;
 import ma.youcode.marsoul.service.impl.VoyageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public class VoyageServiceImpl implements VoyageService {
 
     @Autowired
