@@ -6,12 +6,14 @@ import ma.youcode.marsoul.exception.RoleNotExistException;
 import ma.youcode.marsoul.repository.RoleRepository;
 import ma.youcode.marsoul.service.impl.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Optional;
 
+@Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
 

@@ -48,4 +48,27 @@ public class Bus extends AuditModel {
     @OneToMany(targetEntity = Equipment.class)
     private List<Equipment> equipments = new ArrayList<>();
 
+    public Bus(String startCity, String cityDestination, String startAgency, String agencyDestination, Date voyageDate, Time startHour, Time endHour, Integer emptyPlaces) {
+        this.startCity = startCity;
+        this.cityDestination = cityDestination;
+        this.startAgency = startAgency;
+        this.agencyDestination = agencyDestination;
+        this.voyageDate = voyageDate;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.emptyPlaces = emptyPlaces;
+    }
+
+    public Bus(Integer id, String startCity, String cityDestination, String startAgency, String agencyDestination, Date voyageDate, Time startHour, Time endHour, Integer emptyPlaces) {
+        this.id = id;
+        this.startCity = startCity;
+        this.cityDestination = cityDestination;
+        this.startAgency = startAgency;
+        this.agencyDestination = agencyDestination;
+        this.voyageDate = voyageDate;
+        this.startHour = startHour;
+        this.endHour = endHour;
+        this.emptyPlaces = emptyPlaces;
+    }
+
 }

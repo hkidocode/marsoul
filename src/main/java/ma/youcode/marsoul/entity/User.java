@@ -18,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
-@Table(name = "users")
+@Table(name = "app_users")
 public class User extends AuditModel {
 
     @Id
@@ -42,5 +42,24 @@ public class User extends AuditModel {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "bus_id"))
     private List<Bus> buses = new ArrayList<>();
+
+    public User(String firstName, String lastName, String phone, String email, String password, Collection<Role> roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(Long id, String firstName, String lastName, String phone, String email, String password, Collection<Role> roles) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
 }

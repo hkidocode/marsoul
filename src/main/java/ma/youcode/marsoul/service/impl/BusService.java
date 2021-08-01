@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface BusService {
     Bus getBusById(Integer busId);
     List<Bus> getAllBuses();

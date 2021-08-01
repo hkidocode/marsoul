@@ -6,12 +6,14 @@ import ma.youcode.marsoul.exception.VoyageNotExistException;
 import ma.youcode.marsoul.repository.VoyageRepository;
 import ma.youcode.marsoul.service.impl.VoyageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 @Transactional
 public class VoyageServiceImpl implements VoyageService {
 
@@ -39,7 +41,7 @@ public class VoyageServiceImpl implements VoyageService {
     }
 
     @Override
-    public Voyage updateVoyage(Voyage voyage, Long voyageId) {
+    public Voyage updateVoyage(Long voyageId, Voyage voyage) {
         Voyage targetedVoyage = getVoyageById(voyageId);
         targetedVoyage.setSeatPosition(voyage.getSeatPosition());
         targetedVoyage.setStatus(voyage.getStatus());

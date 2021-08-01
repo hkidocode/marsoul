@@ -2,19 +2,22 @@ package ma.youcode.marsoul.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import ma.youcode.marsoul.enums.UserRole;
+import lombok.Setter;
 
-@Data
+import java.util.Collection;
+
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PersonDTO {
+public class UserDTO {
 
     private String firstName;
     private String lastName;
-    private UserRole role;
+    private Collection<String> roles;
     private String phone;
     private String email;
     private String password;

@@ -5,11 +5,13 @@ import ma.youcode.marsoul.exception.BusNotExistException;
 import ma.youcode.marsoul.repository.BusRepository;
 import ma.youcode.marsoul.service.impl.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
 
+@Service
 @Transactional
 public class BusServiceImpl implements BusService {
 

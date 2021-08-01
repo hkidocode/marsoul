@@ -18,4 +18,9 @@ public class Equipment extends AuditModel {
     @Column(name = "equipment_id", nullable = false, updatable = false)
     private Integer id;
     private String name;
+
+    public Equipment(String name) {
+        this.name = name;
+    }
+
 }

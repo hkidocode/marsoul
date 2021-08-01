@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public interface SocietyService {
     Society getSocietyById(Integer societyId);
     List<Society> getAllSocieties();
