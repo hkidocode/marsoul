@@ -5,7 +5,6 @@ import ma.youcode.marsoul.exception.EquipmentNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
 import ma.youcode.marsoul.service.impl.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
