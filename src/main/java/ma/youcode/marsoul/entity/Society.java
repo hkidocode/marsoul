@@ -25,9 +25,11 @@ public class Society extends AuditModel {
     private Integer busCount;
     @OneToMany(mappedBy = "society")
     private List<Bus> buses = new ArrayList<>();
+    // TODO: uncomment this
 //    @OneToMany(targetEntity = User.class)
 //    @JoinColumn(name = "user_id")
 //    private List<User> people = new ArrayList<>();
+//    
 
     public Society(String name, List<Bus> buses) {
         this.name = name;
