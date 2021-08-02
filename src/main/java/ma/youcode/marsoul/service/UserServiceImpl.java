@@ -9,6 +9,7 @@ import ma.youcode.marsoul.repository.RoleRepository;
 import ma.youcode.marsoul.repository.UserRepository;
 import ma.youcode.marsoul.service.impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +25,9 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoleRepository roleRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public User getUserById(Long personId) {
         return userRepository.findById(personId)
@@ -37,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(User user, Collection<String> roleNames) {
-        Optional<User> personByEmail = userRepository.findPersonByEmail(user.getEmail());
+        Optional<User> personByEmail = userRepository.findUserByEmail(user.getEmail());
         Collection<Role> roles = new HashSet<>();
         if (personByEmail.isPresent()) {
             throw new UserExistException("User already exist");
@@ -56,7 +60,7 @@ public class UserServiceImpl implements UserService {
                 user.setRoles(roles);
             }
         }
-
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
@@ -67,7 +71,7 @@ public class UserServiceImpl implements UserService {
         targetedUser.setLastName(user.getLastName());
         targetedUser.setPhone(user.getPhone());
         targetedUser.setEmail(user.getEmail());
-        targetedUser.setPassword(user.getPassword());
+        targetedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         targetedUser.setUpdatedAt(new Date(System.currentTimeMillis()));
         return userRepository.save(targetedUser);
     }
