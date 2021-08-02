@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Time;
 
 @Setter
@@ -23,6 +23,5 @@ public class BusDTO {
     private Date voyageDate;
     private Time startHour;
     private Time endHour;
-    private SocietyDTO society;
 
 }

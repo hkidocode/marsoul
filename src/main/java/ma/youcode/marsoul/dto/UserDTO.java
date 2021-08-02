@@ -22,4 +22,11 @@ public class UserDTO {
     private String email;
     private String password;
 
+    public UserDTO(String firstName, String lastName, String phone, String email, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
 }
