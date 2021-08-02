@@ -62,4 +62,12 @@ public class User extends AuditModel {
         this.roles = roles;
     }
 
+    public User(Long id, String firstName, String lastName, String phone, String email, String password) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.password = password;
+    }
 }

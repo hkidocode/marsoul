@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class Bus extends AuditModel {
     @Column(name = "end_hour")
     private Time endHour;
     @Column(name = "empty_places")
-    private Integer emptyPlaces;
+    private int emptyPlaces;
     @ManyToOne(targetEntity = Society.class)
     private Society society;
     @OneToMany(targetEntity = Voyage.class)
@@ -59,7 +59,7 @@ public class Bus extends AuditModel {
         this.emptyPlaces = emptyPlaces;
     }
 
-    public Bus(Integer id, String startCity, String cityDestination, String startAgency, String agencyDestination, Date voyageDate, Time startHour, Time endHour, Integer emptyPlaces) {
+    public Bus(Integer id, String startCity, String cityDestination, String startAgency, String agencyDestination, Date voyageDate, Time startHour, Time endHour, int emptyPlaces) {
         this.id = id;
         this.startCity = startCity;
         this.cityDestination = cityDestination;
