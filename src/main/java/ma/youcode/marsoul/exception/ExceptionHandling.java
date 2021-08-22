@@ -3,94 +3,87 @@ package ma.youcode.marsoul.exception;
 
 import ma.youcode.marsoul.message.ApiError;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.HashSet;
+import java.util.Set;
 
 @RestControllerAdvice
 public class ExceptionHandling {
 
-    @ExceptionHandler(BusNotExistException.class)
+    @ExceptionHandler(EntityExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleBusNotExistException(BusNotExistException exception, HttpServletRequest request) {
+    public ApiError handleEntityExistException(EntityExistException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(EquipmentNotExistException.class)
+    @ExceptionHandler(EntityNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleEquipmentNotExistException(EquipmentNotExistException exception, HttpServletRequest request) {
+    public ApiError handleEntityNotExistException(EntityNotExistException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(UserNotExistException.class)
+    @ExceptionHandler(EmailExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleUserNotExistException(UserNotExistException exception, HttpServletRequest request) {
+    public ApiError handleEmailExistException(EmailExistException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(SocietyNotExistException.class)
+    @ExceptionHandler(EmailNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleSocietyNotExistException(SocietyNotExistException exception, HttpServletRequest request) {
+    public ApiError handleEmailNotExistException(EmailNotExistException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(VoyageNotExistException.class)
+    @ExceptionHandler(PasswordNotMatchException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleVoyageNotExistException(VoyageNotExistException exception, HttpServletRequest request) {
+    public ApiError handlePasswordNotMatchException(PasswordNotMatchException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(RoleNotExistException.class)
+    @ExceptionHandler(TokenExpiredException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleRoleNotExistException(RoleNotExistException exception, HttpServletRequest request) {
+    public ApiError handleTokenExpiredException(TokenExpiredException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(EquipmentExistException.class)
+    @ExceptionHandler(TokenConfirmedException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleEquipmentExistException(EquipmentExistException exception, HttpServletRequest request) {
+    public ApiError handleTokenConfirmedException(TokenConfirmedException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(UserExistException.class)
+    @ExceptionHandler(TokenNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleUserExistException(UserExistException exception, HttpServletRequest request) {
+    public ApiError handleTokenNotFoundException(TokenNotFoundException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(SocietyExistException.class)
+    @ExceptionHandler(ContextException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleSocietyExistException(SocietyExistException exception, HttpServletRequest request) {
+    public ApiError handleContextException(ContextException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
-    @ExceptionHandler(VoyageExistException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleVoyageExistException(VoyageExistException exception, HttpServletRequest request) {
-        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
-    }
-
-    @ExceptionHandler(RoleExistException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiError handleRoleExistException(RoleExistException exception, HttpServletRequest request) {
-        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(UpdateImageException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleDataIntegrityViolationException(MethodArgumentNotValidException exception, HttpServletRequest request) {
+    public ApiError handleUpdateImageException(UpdateImageException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiError handleConstraintViolationException(ConstraintViolationException exception, HttpServletRequest request) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST.value(), "Validation failed", request.getServletPath());
-        BindingResult bindingResult = exception.getBindingResult();
-        Map<String, String> validationErrors = new HashMap<>();
-        for (FieldError fieldError: bindingResult.getFieldErrors()) {
-            validationErrors.put(fieldError.getField(), fieldError.getDefaultMessage());
+        Set<String> validationErrors = new HashSet<>();
+        Set<ConstraintViolation<?>> bindingResult = exception.getConstraintViolations();
+        for (ConstraintViolation<?> fieldError: bindingResult) {
+            validationErrors.add(fieldError.getMessage());
         }
         apiError.setValidationErrors(validationErrors);
         return apiError;

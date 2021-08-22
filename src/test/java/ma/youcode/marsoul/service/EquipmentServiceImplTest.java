@@ -2,6 +2,7 @@ package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Equipment;
 import ma.youcode.marsoul.repository.EquipmentRepository;
+import ma.youcode.marsoul.service.impl.EquipmentServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

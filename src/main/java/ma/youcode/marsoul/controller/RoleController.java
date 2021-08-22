@@ -2,7 +2,7 @@ package ma.youcode.marsoul.controller;
 
 import ma.youcode.marsoul.dto.RoleDTO;
 import ma.youcode.marsoul.entity.Role;
-import ma.youcode.marsoul.service.impl.RoleService;
+import ma.youcode.marsoul.service.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

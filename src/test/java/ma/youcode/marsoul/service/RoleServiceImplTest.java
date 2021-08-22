@@ -2,6 +2,7 @@ package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Role;
 import ma.youcode.marsoul.repository.RoleRepository;
+import ma.youcode.marsoul.service.impl.RoleServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

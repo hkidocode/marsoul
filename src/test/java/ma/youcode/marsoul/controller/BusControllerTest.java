@@ -3,7 +3,7 @@ package ma.youcode.marsoul.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.youcode.marsoul.dto.BusDTO;
 import ma.youcode.marsoul.entity.Bus;
-import ma.youcode.marsoul.service.BusServiceImpl;
+import ma.youcode.marsoul.service.impl.BusServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;

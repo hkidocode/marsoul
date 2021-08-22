@@ -7,9 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Setter
@@ -25,27 +28,50 @@ public class Bus extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bus_id", nullable = false, updatable = false)
     private Integer id;
-    @Column(name = "start_city")
+
+    @NotBlank(message = "Start city is required")
+    @Size(min=3, message="Start city : minimum 3 characters")
+    @Column(name = "start_city", length = 20, nullable = false)
     private String startCity;
-    @Column(name = "city_destination")
+
+    @NotBlank(message = "City destination is required")
+    @Size(min=3, message="City destination : minimum 3 characters")
+    @Column(name = "city_destination", length = 20, nullable = false)
     private String cityDestination;
-    @Column(name = "start_agency")
+
+    @NotBlank(message = "Start agency is required")
+    @Size(min=3, message="Start agency : minimum 3 characters")
+    @Column(name = "start_agency", length = 480, nullable = false)
     private String startAgency;
-    @Column(name = "agency_destination")
+
+    @NotBlank(message = "Agency destination is required")
+    @Size(min=3, message="Agency destination : minimum 3 characters")
+    @Column(name = "agency_destination", length = 480, nullable = false)
     private String agencyDestination;
-    @Column(name = "voyage_date")
+
+    @FutureOrPresent(message = "Voyage date should be today or after")
+    @NotBlank(message = "Voyage date is required")
+    @Column(name = "voyage_date", nullable = false)
     private Date voyageDate;
-    @Column(name = "start_hour")
+
+    @NotBlank(message = "Start hour is required")
+    @Column(name = "start_hour", nullable = false)
     private Time startHour;
-    @Column(name = "end_hour")
+
+    @NotBlank(message = "End hour is required")
+    @Column(name = "end_hour", nullable = false)
     private Time endHour;
+
+    @NotBlank(message = "Empty places is required")
     @Column(name = "empty_places")
     private int emptyPlaces;
+
     @ManyToOne(targetEntity = Society.class)
+    @JoinColumn(name = "society_id")
     private Society society;
-    @OneToMany(targetEntity = Voyage.class)
-    private List<Voyage> voyages = new ArrayList<>();
+
     @OneToMany(targetEntity = Equipment.class)
+    @JoinColumn(name = "equipment_id")
     private List<Equipment> equipments = new ArrayList<>();
 
     public Bus(String startCity, String cityDestination, String startAgency, String agencyDestination, Date voyageDate, Time startHour, Time endHour, Integer emptyPlaces) {

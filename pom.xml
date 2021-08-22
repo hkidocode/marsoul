@@ -16,7 +16,9 @@
 	<properties>
 		<java.version>1.8</java.version>
         <model-mapper.version>2.3.9</model-mapper.version>
-		<java-jwt.version>3.18.1</java-jwt.version>
+		<jjwt.version>0.9.1</jjwt.version>
+		<flickr.version>3.0.6</flickr.version>
+
 	</properties>
 	<dependencies>
 		<dependency>
@@ -30,6 +32,14 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -57,9 +67,14 @@
             <version>${model-mapper.version}</version>
         </dependency>
 		<dependency>
-			<groupId>com.auth0</groupId>
-			<artifactId>java-jwt</artifactId>
-			<version>${java-jwt.version}</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>${jjwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.flickr4java</groupId>
+			<artifactId>flickr4java</artifactId>
+			<version>${flickr.version}</version>
 		</dependency>
 
 		<dependency>

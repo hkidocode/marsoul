@@ -3,7 +3,8 @@ package ma.youcode.marsoul.message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.sql.Timestamp;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiError {
@@ -11,7 +12,7 @@ public class ApiError {
     private Timestamp timestamp;
     private String message;
     private String path;
-    private Map<String, String> validationErrors;
+    private Set<String> validationErrors = new HashSet<>();
 
     public ApiError() {
     }
@@ -55,11 +56,11 @@ public class ApiError {
         this.path = path;
     }
 
-    public Map<String, String> getValidationErrors() {
+    public Set<String> getValidationErrors() {
         return validationErrors;
     }
 
-    public void setValidationErrors(Map<String, String> validationErrors) {
+    public void setValidationErrors(Set<String> validationErrors) {
         this.validationErrors = validationErrors;
     }
 }

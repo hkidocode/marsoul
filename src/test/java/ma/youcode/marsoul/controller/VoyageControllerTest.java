@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.youcode.marsoul.dto.VoyageDTO;
 import ma.youcode.marsoul.entity.Voyage;
 import ma.youcode.marsoul.enums.VoyageStatus;
-import ma.youcode.marsoul.service.VoyageServiceImpl;
+import ma.youcode.marsoul.service.impl.VoyageServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;

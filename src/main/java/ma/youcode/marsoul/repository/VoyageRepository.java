@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface VoyageRepository extends JpaRepository<Voyage, Long> {
-    Optional<Voyage> findVoyageBySeatPosition(Integer seatPosition);
+    Optional<Voyage> findBySeatPosition(Integer seatPosition);
 }

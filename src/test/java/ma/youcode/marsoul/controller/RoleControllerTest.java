@@ -3,7 +3,7 @@ package ma.youcode.marsoul.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.youcode.marsoul.dto.RoleDTO;
 import ma.youcode.marsoul.entity.Role;
-import ma.youcode.marsoul.service.RoleServiceImpl;
+import ma.youcode.marsoul.service.impl.RoleServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;

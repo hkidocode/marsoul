@@ -2,6 +2,7 @@ package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Society;
 import ma.youcode.marsoul.repository.SocietyRepository;
+import ma.youcode.marsoul.service.impl.SocietyServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,9 +27,9 @@ class SocietyServiceImplTest {
     @InjectMocks
     private SocietyServiceImpl societyService;
 
-    Society society1 = new Society(1, "CTM", 40);
+    Society society1 = new Society(1L, "CTM", 40);
 
-    Society society2 = new Society(2, "Supra Tours", 30);
+    Society society2 = new Society(2L, "Supra Tours", 30);
 
     List<Society> societies = new ArrayList<>();
 
@@ -41,7 +42,7 @@ class SocietyServiceImplTest {
 
     @Test
     void shouldReturnSocietyOfIdOne() {
-        when(societyRepository.findById(1)).thenReturn(Optional.of(society1));
+        when(societyRepository.findById(1L)).thenReturn(Optional.of(society1));
         assertThat(societyService.getSocietyById(society1.getId())).isEqualTo(society1);
     }
 

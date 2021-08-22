@@ -3,6 +3,7 @@ package ma.youcode.marsoul.service;
 import ma.youcode.marsoul.entity.Voyage;
 import ma.youcode.marsoul.enums.VoyageStatus;
 import ma.youcode.marsoul.repository.VoyageRepository;
+import ma.youcode.marsoul.service.impl.VoyageServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

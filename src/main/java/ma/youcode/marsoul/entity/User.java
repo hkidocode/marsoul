@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,20 +28,44 @@ public class User extends AuditModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false, updatable = false)
     private Long id;
-    @Column(name = "first_name")
+
+    @NotBlank(message = "First name is required")
+    @Column(name = "first_name", length = 180, nullable = false)
     private String firstName;
-    @Column(name = "last_name")
+
+    @NotBlank(message = "Last name is required")
+    @Column(name = "last_name", length = 180, nullable = false)
     private String lastName;
+
+    @NotBlank(message = "Phone is required")
+    @Pattern(regexp="^(\\+212|0)([567])(\\d[\\-_/]*){8}$", message="Phone should be valid")
+    @Column(name = "phone", nullable = false)
     private String phone;
+
+    @Column(name = "image")
+    private String image;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email should be valid")
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    @NotBlank(message = "Password is required")
+    @Pattern(regexp="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$", message="Your password must be : more than 8 chars, at least one number and at least one special character")
+    @Column(name = "password", nullable = false)
     private String password;
+
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled = false;
+
     @ManyToMany
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @JoinTable(name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles = new HashSet<>();
+
     @ManyToMany
-    @JoinTable(name = "user_bus",
+    @JoinTable(name = "user_buses",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "bus_id"))
     private List<Bus> buses = new ArrayList<>();

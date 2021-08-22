@@ -2,7 +2,7 @@ package ma.youcode.marsoul.controller;
 
 import ma.youcode.marsoul.dto.VoyageDTO;
 import ma.youcode.marsoul.entity.Voyage;
-import ma.youcode.marsoul.service.impl.VoyageService;
+import ma.youcode.marsoul.service.VoyageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -3,7 +3,7 @@ package ma.youcode.marsoul.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.youcode.marsoul.dto.SocietyDTO;
 import ma.youcode.marsoul.entity.Society;
-import ma.youcode.marsoul.service.SocietyServiceImpl;
+import ma.youcode.marsoul.service.impl.SocietyServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
@@ -35,7 +35,7 @@ class SocietyControllerTest {
     @Mock
     private ModelMapper modelMapper;
 
-    Society society = new Society(1, "CTM", 40);
+    Society society = new Society(1L, "CTM", 40);
 
     SocietyDTO societyDTO = new SocietyDTO("CTM", 40);
 

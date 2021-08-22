@@ -3,7 +3,7 @@ package ma.youcode.marsoul.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ma.youcode.marsoul.dto.UserDTO;
 import ma.youcode.marsoul.entity.User;
-import ma.youcode.marsoul.service.UserServiceImpl;
+import ma.youcode.marsoul.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
@@ -37,7 +37,7 @@ class UserControllerTest {
 
     User user = new User(1L, "Mustapha", "Kadouri", "21260000000", "test1@gmail.com", "1234");
 
-    UserDTO userDTO =  new UserDTO("Mustapha", "Kadouri", "21260000000", "test1@gmail.com", "1234");
+    UserDTO userDTO =  new UserDTO("Mustapha", "Kadouri", "https://google.com/user", "test1@gmail.com", "1234");
 
 
     @Test

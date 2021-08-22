@@ -2,6 +2,7 @@ package ma.youcode.marsoul.service;
 
 import ma.youcode.marsoul.entity.Bus;
 import ma.youcode.marsoul.repository.BusRepository;
+import ma.youcode.marsoul.service.impl.BusServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
