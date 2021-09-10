@@ -4,6 +4,7 @@ import ma.youcode.marsoul.dto.EquipmentDTO;
 import ma.youcode.marsoul.entity.Equipment;
 import ma.youcode.marsoul.service.EquipmentService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class EquipmentController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<EquipmentDTO> getAllEquipments() {
+    public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
         List<Equipment> allEquipments = equipmentService.getAllEquipments();
-            return ResponseEntity.ok().body(modelMapper.map(allEquipments, EquipmentDTO.class));
+            return ResponseEntity.ok().body(modelMapper.map(allEquipments, new TypeToken<List<EquipmentDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

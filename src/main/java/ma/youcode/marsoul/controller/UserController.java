@@ -1,14 +1,24 @@
 package ma.youcode.marsoul.controller;
 
+import ma.youcode.marsoul.constant.FileConstant;
 import ma.youcode.marsoul.dto.UserDTO;
 import ma.youcode.marsoul.entity.User;
+import ma.youcode.marsoul.message.MessageResponse;
 import ma.youcode.marsoul.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 @CrossOrigin
@@ -23,9 +33,9 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<UserDTO> getAllUsers() {
+    public ResponseEntity<Collection<User>> getAllUsers() {
         Collection<User> allUsers = userService.getAllUsers();
-        return ResponseEntity.ok().body(modelMapper.map(allUsers, UserDTO.class));
+        return ResponseEntity.ok().body(allUsers);
     }
 
     @GetMapping("/{id}")
@@ -50,6 +60,33 @@ public class UserController {
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") Long id) {
         userService.deleteUserById(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/update-profile-image")
+    public ResponseEntity<MessageResponse> updateProfileImage(@PathVariable("id") Long id, @RequestParam("image") MultipartFile image) throws IOException {
+        userService.updateProfileImage(id, image);
+        return ResponseEntity.ok().body(new MessageResponse("Profile image updated successfully"));
+    }
+
+    @GetMapping(path = "/user/image/{first-name}-{last-name}/{file-name}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getProfileImage(@PathVariable("first-name") String firstName, @PathVariable("last-name") String lastName,
+                                  @PathVariable("file-name") String fileName) throws IOException {
+        return Files.readAllBytes(Paths.get(FileConstant.USER_FOLDER + firstName + "-" + lastName + "/" + fileName));
+    }
+
+    @GetMapping(path = "/user/image/profile/{first-name}-{last-name}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getTemporaryProfileImage(@PathVariable("first-name") String firstName, @PathVariable("last-name") String lastName) throws IOException {
+        URL url = new URL(FileConstant.TEMP_PROFILE_IMAGE_BASE_URL + firstName + "-" + lastName);
+        // place to store image coming from API
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try (InputStream inputStream = url.openStream()){
+            int bytesRead;
+            byte[] chunk = new byte[1024];
+            while ((bytesRead = inputStream.read(chunk)) > 0) {
+                byteArrayOutputStream.write(chunk, 0, bytesRead); // 0 - 1024 bytes
+            }
+        }
+        return byteArrayOutputStream.toByteArray();
     }
 
 }

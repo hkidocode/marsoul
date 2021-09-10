@@ -4,6 +4,7 @@ import ma.youcode.marsoul.dto.BusDTO;
 import ma.youcode.marsoul.entity.Bus;
 import ma.youcode.marsoul.service.BusService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class BusController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<BusDTO> getAllBuses() {
+    public ResponseEntity<List<BusDTO>> getAllBuses() {
         List<Bus> allBuses = busService.getAllBuses();
-        return ResponseEntity.ok().body(modelMapper.map(allBuses, BusDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(allBuses, new TypeToken<List<BusDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

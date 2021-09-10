@@ -4,6 +4,7 @@ import ma.youcode.marsoul.dto.SocietyDTO;
 import ma.youcode.marsoul.entity.Society;
 import ma.youcode.marsoul.service.SocietyService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class SocietyController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<SocietyDTO> getAllSocieties() {
+    public ResponseEntity<List<SocietyDTO>> getAllSocieties() {
         List<Society> allSocieties = societyService.getAllSocieties();
-        return ResponseEntity.ok().body(modelMapper.map(allSocieties, SocietyDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(allSocieties, new TypeToken<List<SocietyDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

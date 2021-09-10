@@ -17,13 +17,11 @@ public class JwtProvider {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expiration.date}")
-    private long jwtExpirationDate;
-
     public String generateToken(CustomUserDetails customUserDetails) {
         return Jwts.builder()
                 .setSubject(customUserDetails.getUsername())
                 .setClaims(setClaims(customUserDetails))
+                .setIssuer("Marsoul")
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // 60 min
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -59,6 +57,8 @@ public class JwtProvider {
     private Map<String, Object> setClaims(CustomUserDetails customUserDetails) {
         Map<String, Object> claims = new HashMap<>();
         Collection<? extends GrantedAuthority> roles = customUserDetails.getAuthorities();
+
+        // TODO: Check Auto added roles
         List<String> rolesList = new ArrayList<>();
         rolesList.add("admin");
         rolesList.add("user");
@@ -70,10 +70,6 @@ public class JwtProvider {
             }
         }
         return claims;
-    }
-
-    public long getJwtExpirationDate() {
-        return jwtExpirationDate;
     }
 
 }

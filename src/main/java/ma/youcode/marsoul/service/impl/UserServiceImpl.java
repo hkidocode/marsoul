@@ -3,13 +3,13 @@ package ma.youcode.marsoul.service.impl;
 import ma.youcode.marsoul.config.mail.EmailSender;
 import ma.youcode.marsoul.config.security.CustomUserDetails;
 import ma.youcode.marsoul.config.security.jwt.JwtProvider;
+import ma.youcode.marsoul.constant.FileConstant;
+import ma.youcode.marsoul.dto.request.LoginRequest;
+import ma.youcode.marsoul.dto.request.ResetPasswordRequest;
 import ma.youcode.marsoul.entity.*;
 import ma.youcode.marsoul.exception.*;
 import ma.youcode.marsoul.repository.RoleRepository;
 import ma.youcode.marsoul.repository.UserRepository;
-import ma.youcode.marsoul.dto.request.LoginRequest;
-import ma.youcode.marsoul.dto.request.RefreshTokenRequest;
-import ma.youcode.marsoul.dto.request.ResetPasswordRequest;
 import ma.youcode.marsoul.service.PasswordTokenService;
 import ma.youcode.marsoul.service.RefreshTokenService;
 import ma.youcode.marsoul.service.UserService;
@@ -19,11 +19,17 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -58,6 +64,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtProvider jwtProvider;
 
+    private User user;
+
+    private boolean passwordTokenVerified = false;
+
     @Override
     public User getUserById(Long userId) {
         return userRepository.findById(userId)
@@ -82,15 +92,20 @@ public class UserServiceImpl implements UserService {
             user.setRoles(roles);
         } else {
             for (String roleName : roleNames) {
-                Role role = roleRepository.findByName(roleName);
+                Role role = roleRepository.findByName("ROLE_" + roleName.toUpperCase());
                 if (role == null) {
-                    throw new EntityNotExistException(roleName + " does not exist");
+                    throw new EntityNotExistException("Role " + roleName + " does not exist");
                 }
                 roles.add(role);
                 user.setRoles(roles);
             }
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // to show the password error message
+        if (user.getPassword() != null) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        user.setImage(getTemporaryProfileImageUrl(user.getFirstName(), user.getLastName()));
         userRepository.save(user);
         // generate verification token for this user
         VerificationToken verificationToken = new VerificationToken(user);
@@ -108,7 +123,7 @@ public class UserServiceImpl implements UserService {
         targetedUser.setFirstName(user.getFirstName());
         targetedUser.setLastName(user.getLastName());
         targetedUser.setPhone(user.getPhone());
-        targetedUser.setImage(user.getImage());
+        targetedUser.setImage(setProfileImageUrl(targetedUser.getFirstName(), targetedUser.getLastName()));
         targetedUser.setEmail(user.getEmail());
         targetedUser.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(targetedUser);
@@ -124,10 +139,18 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User updateProfileImage(Long id, MultipartFile image) throws IOException {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new EmailNotExistException("Email does not exist"));
+        saveProfileImage(user, image);
+        return user;
+    }
+
+    @Override
     public void verifyAccount(String token) {
         VerificationToken verificationToken = verificationTokenService.getToken(token)
                 .orElseThrow(() ->
-                        new TokenNotFoundException("Token invalid"));
+                        new TokenNotFoundException("Invalid token"));
 
         if (verificationToken.getConfirmDate() != null) {
             throw new TokenConfirmedException("Email already confirmed");
@@ -147,7 +170,7 @@ public class UserServiceImpl implements UserService {
     public String verifyRefreshToken(String token) {
         RefreshToken refreshToken = refreshTokenService.getToken(token)
                 .orElseThrow(() ->
-                        new TokenNotFoundException("Token does not found"));
+                        new TokenNotFoundException("Invalid token"));
 
         LocalDateTime expiredAt = refreshToken.getExpireDate();
 
@@ -166,20 +189,25 @@ public class UserServiceImpl implements UserService {
         // to check the user is logged in or not
         SecurityContextHolder.getContext().setAuthentication(authentication);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-        // generate refresh token and save it in database
-        RefreshToken refreshToken = new RefreshToken(userDetails.getUser());
+        User user = userDetails.getUser();
+        // generate refresh token and save it to user in database
+        RefreshToken refreshToken = new RefreshToken(user);
         refreshTokenService.saveRefreshToken(refreshToken);
+        // set last login date
+        user.setLastLoginDate(LocalDateTime.now());
         // generate access token
         return jwtProvider.generateToken(userDetails);
     }
 
     @Override
-    public void logoutAccount(RefreshTokenRequest refreshTokenRequest) {
-        refreshTokenService.deleteToken(refreshTokenRequest.getRefreshToken());
+    public void logoutAccount(String token) {
+        RefreshToken refreshToken = refreshTokenService.getToken(token).orElseThrow(() ->
+                new TokenNotFoundException("Invalid token"));
+        refreshTokenService.deleteToken(refreshToken.getUser());
     }
 
     @Override
-    public void resetPassword(String email) {
+    public void sendResetPassword(String email) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EmailNotExistException("Email does not exist"));
         PasswordToken passwordToken = new PasswordToken(user);
@@ -188,10 +216,32 @@ public class UserServiceImpl implements UserService {
         String link = "http://localhost:8080/marsoul/api/v1/auth/reset-password/" + passwordToken.getToken();
         // create templateModel for thymeleaf template
         sendEmailToUser(user, link, "reset-password", "Reset password");
+        setUser(user);
     }
 
     @Override
-    public void verifyResetPassword(String token) {
+    public void updatePassword(ResetPasswordRequest resetPasswordRequest, String token) {
+        User user = getUser();
+
+        if (!passwordTokenVerified) {
+            verifyResetPassword(token);
+        }
+
+        if (resetPasswordRequest.getPassword().equals(resetPasswordRequest.getConfirmPassword())) {
+            if (passwordEncoder.matches(resetPasswordRequest.getPassword(), user.getPassword())) {
+                throw new PasswordAlreadyUsedException("Password already used");
+            }
+            user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
+            userRepository.save(user);
+            // delete refresh token of that user
+            refreshTokenService.deleteToken(user);
+        } else {
+            throw new PasswordNotMatchException("Password does not matches");
+        }
+    }
+
+    private void verifyResetPassword(String token) {
+
         PasswordToken passwordToken = passwordTokenService.getToken(token)
                 .orElseThrow(() ->
                         new TokenNotFoundException("Token does not found"));
@@ -205,21 +255,8 @@ public class UserServiceImpl implements UserService {
         if (expiredAt.isBefore(LocalDateTime.now())) {
             throw new TokenExpiredException("Token expired");
         }
-
         passwordTokenService.setConfirmedDate(token);
-    }
-
-    @Override
-    public void updatePassword(ResetPasswordRequest resetPasswordRequest) {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String email = principal.getUsername();
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new EntityNotExistException("User does not exist"));
-        if (resetPasswordRequest.getPassword().equals(resetPasswordRequest.getConfirmPassword())) {
-            user.setPassword(passwordEncoder.encode(resetPasswordRequest.getPassword()));
-        } else {
-            throw new PasswordNotMatchException("Password does not matches");
-        }
+        this.passwordTokenVerified = true;
     }
 
     private void sendEmailToUser(User user, String link, String thymeleafName, String emailSubject) {
@@ -231,4 +268,41 @@ public class UserServiceImpl implements UserService {
         emailSender.sendEmail(user.getEmail(), emailSubject, thymeleafName, templateModel);
     }
 
+    private String getTemporaryProfileImageUrl(String firstName, String lastName) {
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(FileConstant.DEFAULT_USER_IMAGE_PATH + firstName + "-" + lastName)
+                .toUriString();
+    }
+
+    private String setProfileImageUrl(String firstName, String lastName) {
+        return ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path(FileConstant.USER_IMAGE_PATH + firstName + "-" + lastName + "/" + firstName + "-" + lastName + "." + FileConstant.USER_EXTENSION)
+                .toUriString();
+    }
+
+    private void saveProfileImage(User user, MultipartFile image) throws IOException {
+        if (image != null) {
+            // get location of user folder
+            Path userFolder = Paths.get(FileConstant.USER_FOLDER + user.getFirstName() + "-" + user.getLastName()).toAbsolutePath().normalize();
+            if (!Files.exists(userFolder)) {
+                Files.createDirectories(userFolder);
+            }
+            Files.deleteIfExists(Paths.get(userFolder + user.getFirstName() + "-" + user.getLastName() + "." + FileConstant.USER_EXTENSION));
+            Files.copy(image.getInputStream(), userFolder.resolve(user.getFirstName() + "-" + user.getLastName() + "." + FileConstant.USER_EXTENSION), StandardCopyOption.REPLACE_EXISTING);
+
+            // set new image url
+            user.setImage(setProfileImageUrl(user.getFirstName(), user.getLastName()));
+            userRepository.save(user);
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

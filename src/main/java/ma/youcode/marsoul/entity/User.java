@@ -10,10 +10,8 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Setter
 @Getter
@@ -42,7 +40,7 @@ public class User extends AuditModel {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false)
     private String image;
 
     @NotBlank(message = "Email is required")
@@ -50,13 +48,22 @@ public class User extends AuditModel {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "join_date", nullable = false)
+    private LocalDateTime joinDate = LocalDateTime.now();
+
+    @Column(name = "last_login_date")
+    private LocalDateTime lastLoginDate;
+
     @NotBlank(message = "Password is required")
-    @Pattern(regexp="(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$", message="Your password must be : more than 8 chars, at least one number and at least one special character")
+    @Pattern(regexp="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$", message="Your password must be : more than 8 chars, at least one number and at least one special character")
     @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled = false;
+
+    @Column(name = "activated", nullable = false)
+    private boolean activated = true;
 
     @ManyToMany
     @JoinTable(name = "user_roles",

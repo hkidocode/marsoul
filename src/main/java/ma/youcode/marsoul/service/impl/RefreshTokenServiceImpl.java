@@ -1,7 +1,7 @@
 package ma.youcode.marsoul.service.impl;
 
 import ma.youcode.marsoul.entity.RefreshToken;
-import ma.youcode.marsoul.exception.TokenNotFoundException;
+import ma.youcode.marsoul.entity.User;
 import ma.youcode.marsoul.repository.RefreshTokenRepository;
 import ma.youcode.marsoul.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +26,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
-    public void deleteToken(String token) {
-        RefreshToken refreshToken = refreshTokenRepository.findByToken(token).orElseThrow(
-                () -> new TokenNotFoundException("Token does not exist"));
-        refreshTokenRepository.deleteById(refreshToken.getId());
+    public void deleteToken(User user) {
+        refreshTokenRepository.deleteToken(user);
     }
 
 }

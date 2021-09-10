@@ -13,10 +13,9 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-    Optional<User> findByPassword(String password);
-
     @Transactional
     @Modifying
     @Query("UPDATE User u " + "SET u.enabled = true WHERE u.email = ?1")
     void enableUser(String email);
+
 }

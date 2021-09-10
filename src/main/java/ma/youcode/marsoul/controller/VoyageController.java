@@ -4,6 +4,7 @@ import ma.youcode.marsoul.dto.VoyageDTO;
 import ma.youcode.marsoul.entity.Voyage;
 import ma.youcode.marsoul.service.VoyageService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,9 +24,9 @@ public class VoyageController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<VoyageDTO> getAllVoyages() {
+    public ResponseEntity<List<VoyageDTO>> getAllVoyages() {
         List<Voyage> allVoyages = voyageService.getAllVoyages();
-        return ResponseEntity.ok().body(modelMapper.map(allVoyages, VoyageDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(allVoyages, new TypeToken<List<VoyageDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

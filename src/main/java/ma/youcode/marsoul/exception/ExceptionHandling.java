@@ -40,9 +40,39 @@ public class ExceptionHandling {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 
+    @ExceptionHandler(ConfirmEmailException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleConfirmEmailException(ConfirmEmailException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
     @ExceptionHandler(PasswordNotMatchException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handlePasswordNotMatchException(PasswordNotMatchException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    @ExceptionHandler(PasswordAlreadyUsedException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handlePasswordAlreadyUsedException(PasswordAlreadyUsedException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    @ExceptionHandler(EnableUserException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleEnableUserException(EnableUserException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    @ExceptionHandler(ExceedLoginAttemptsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleExceedLoginAttemptsException(ExceedLoginAttemptsException exception, HttpServletRequest request) {
+        return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiError handleBadCredentialsException(BadCredentialsException exception, HttpServletRequest request) {
         return new ApiError(HttpStatus.NOT_FOUND.value(), exception.getMessage(), request.getServletPath());
     }
 

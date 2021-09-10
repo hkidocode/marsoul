@@ -4,12 +4,14 @@ import ma.youcode.marsoul.dto.RoleDTO;
 import ma.youcode.marsoul.entity.Role;
 import ma.youcode.marsoul.service.RoleService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -23,9 +25,9 @@ public class RoleController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<RoleDTO> getAllRoles() {
+    public ResponseEntity<Collection<RoleDTO>> getAllRoles() {
         Collection<Role> allRoles = roleService.getAllRoles();
-        return ResponseEntity.ok().body(modelMapper.map(allRoles, RoleDTO.class));
+        return ResponseEntity.ok().body(modelMapper.map(allRoles, new TypeToken<List<RoleDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")
