@@ -1,5 +1,6 @@
 package ma.youcode.marsoul.controller;
 
+import ma.youcode.marsoul.config.security.CustomUserDetails;
 import ma.youcode.marsoul.dto.UserDTO;
 import ma.youcode.marsoul.dto.request.EmailRequest;
 import ma.youcode.marsoul.dto.request.LoginRequest;
@@ -10,13 +11,14 @@ import ma.youcode.marsoul.message.MessageResponse;
 import ma.youcode.marsoul.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.ExecutionException;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/marsoul/api/v1/auth")
 public class AuthController {
@@ -41,12 +43,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) throws ExecutionException {
-        String accessToken = userService.loginAccount(loginRequest);
-        return ResponseEntity.ok().body(new AuthenticationResponse(
-                accessToken,
-                "",
-                loginRequest.getEmail()
-        ));
+        HttpHeaders accessToken = userService.loginAccount(loginRequest);
+        CustomUserDetails userDetails = (CustomUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok().body(new AuthenticationResponse(accessToken, userDetails));
     }
 
     // TODO: Check Here -----

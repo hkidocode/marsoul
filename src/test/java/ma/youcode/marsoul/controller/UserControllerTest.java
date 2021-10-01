@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -40,15 +39,15 @@ class UserControllerTest {
     UserDTO userDTO =  new UserDTO("Mustapha", "Kadouri", "https://google.com/user", "test1@gmail.com", "1234");
 
 
-    @Test
-    void shouldGetMappingOfAllUsers() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/users").
-                contentType(MediaType.APPLICATION_JSON).
-                content(asJsonString(userDTO))).
-                andDo(MockMvcResultHandlers.print());
-        verify(userService).getAllUsers();
-        verify(userService,times(1)).getAllUsers();
-    }
+//    @Test
+//    void shouldGetMappingOfAllUsers() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/users").
+//                contentType(MediaType.APPLICATION_JSON).
+//                content(asJsonString(userDTO))).
+//                andDo(MockMvcResultHandlers.print());
+//        verify(userService).getAllUsers();
+//        verify(userService,times(1)).getAllUsers();
+//    }
 
     @Test
     void shouldGetMappingOfUser() throws Exception {

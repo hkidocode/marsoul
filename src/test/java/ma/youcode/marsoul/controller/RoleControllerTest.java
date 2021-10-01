@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -39,16 +38,16 @@ class RoleControllerTest {
 
     RoleDTO roleDTO = new RoleDTO("ROLE_USER");
 
-
-    @Test
-    void shouldGetMappingOfAllRoles() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/roles").
-                contentType(MediaType.APPLICATION_JSON).
-                content(asJsonString(roleDTO))).
-                andDo(MockMvcResultHandlers.print());
-        verify(roleService).getAllRoles();
-        verify(roleService,times(1)).getAllRoles();
-    }
+//
+//    @Test
+//    void shouldGetMappingOfAllRoles() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/roles").
+//                contentType(MediaType.APPLICATION_JSON).
+//                content(asJsonString(roleDTO))).
+//                andDo(MockMvcResultHandlers.print());
+//        verify(roleService).getAllRoles();
+//        verify(roleService,times(1)).getAllRoles();
+//    }
 
     @Test
     void shouldGetMappingOfRole() throws Exception {

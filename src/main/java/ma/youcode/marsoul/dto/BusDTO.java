@@ -23,5 +23,7 @@ public class BusDTO {
     private Date voyageDate;
     private Time startHour;
     private Time endHour;
+    private int emptyPlaces;
+    private int price;
 
 }

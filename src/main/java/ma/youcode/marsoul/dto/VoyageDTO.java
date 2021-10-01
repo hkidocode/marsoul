@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ma.youcode.marsoul.enums.VoyageStatus;
 
+import java.util.Date;
+
 @Setter
 @Getter
 @AllArgsConstructor
@@ -16,5 +18,5 @@ public class VoyageDTO {
 
     private Integer seatPosition;
     private VoyageStatus status;
-
+    private Date voyageDate;
 }

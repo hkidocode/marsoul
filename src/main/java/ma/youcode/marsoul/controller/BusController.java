@@ -6,11 +6,13 @@ import ma.youcode.marsoul.service.BusService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -24,9 +26,10 @@ public class BusController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<BusDTO>> getAllBuses() {
-        List<Bus> allBuses = busService.getAllBuses();
-        return ResponseEntity.ok().body(modelMapper.map(allBuses, new TypeToken<List<BusDTO>>(){}.getType()));
+    public ResponseEntity<Page<BusDTO>> getAllBuses(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "startHour"));
+        Page<Bus> allBuses = busService.getAllBuses(pagingSort);
+        return ResponseEntity.ok().body(modelMapper.map(allBuses, new TypeToken<Page<BusDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

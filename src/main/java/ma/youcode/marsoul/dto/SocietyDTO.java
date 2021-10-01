@@ -15,5 +15,6 @@ public class SocietyDTO {
 
     private String name;
     private Integer busCount;
+    private String image;
 
 }

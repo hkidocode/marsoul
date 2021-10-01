@@ -6,10 +6,12 @@ import ma.youcode.marsoul.exception.EntityNotExistException;
 import ma.youcode.marsoul.repository.BusRepository;
 import ma.youcode.marsoul.service.BusService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.sql.Date;
 import java.util.Optional;
 
 @Service
@@ -26,8 +28,8 @@ public class BusServiceImpl implements BusService {
     }
 
     @Override
-    public List<Bus> getAllBuses() {
-        return busRepository.findAll();
+    public Page<Bus> getAllBuses(Pageable pageable) {
+        return busRepository.findAll(pageable);
     }
 
     @Override
@@ -60,5 +62,10 @@ public class BusServiceImpl implements BusService {
         } else {
             throw new EntityNotExistException("Bus does not exist");
         }
+    }
+
+    @Override
+    public Page<Bus> searchBuses(Pageable pageable, String startCity, String cityDestination, Date voyageDate) {
+        return busRepository.findAllByStartCityAndCityDestinationOrVoyageDate(pageable, startCity, cityDestination, voyageDate);
     }
 }

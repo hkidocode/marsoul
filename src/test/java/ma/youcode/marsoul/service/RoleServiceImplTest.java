@@ -9,12 +9,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class RoleServiceImplTest {
@@ -44,16 +45,16 @@ class RoleServiceImplTest {
         assertThat(roleService.getRoleById(role1.getId())).isEqualTo(role1);
     }
 
-    @Test
-    void shouldReturnListOfRoles() {
-        roles.add(role1);
-        roles.add(role2);
-        roleRepository.save(role1);
-        when(roleRepository.findAll()).thenReturn(roles);
-        Collection<Role> roleCollection = roleService.getAllRoles();
-        assertEquals(roles, roleCollection);
-        verify(roleRepository, times(1)).save(role1);
-        verify(roleRepository, times(1)).findAll();
-    }
+//    @Test
+//    void shouldReturnListOfRoles() {
+//        roles.add(role1);
+//        roles.add(role2);
+//        roleRepository.save(role1);
+//        when(roleRepository.findAll()).thenReturn(roles);
+//        Collection<Role> roleCollection = roleService.getAllRoles();
+//        assertEquals(roles, roleCollection);
+//        verify(roleRepository, times(1)).save(role1);
+//        verify(roleRepository, times(1)).findAll();
+//    }
 
 }

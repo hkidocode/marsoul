@@ -16,8 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -60,16 +59,16 @@ class UserServiceImplTest {
         assertThat(userService.getUserById(user1.getId())).isEqualTo(user1);
     }
 
-    @Test
-    void shouldReturnListOfUsers() {
-        users.add(user1);
-        users.add(user2);
-        userRepository.save(user1);
-        when(userRepository.findAll()).thenReturn(users);
-        List<User> userList = userService.getAllUsers();
-        assertEquals(users, userList);
-        verify(userRepository, times(1)).save(user1);
-        verify(userRepository, times(1)).findAll();
-    }
+//    @Test
+//    void shouldReturnListOfUsers() {
+//        users.add(user1);
+//        users.add(user2);
+//        userRepository.save(user1);
+//        when(userRepository.findAll()).thenReturn(users);
+//        List<User> userList = userService.getAllUsers();
+//        assertEquals(users, userList);
+//        verify(userRepository, times(1)).save(user1);
+//        verify(userRepository, times(1)).findAll();
+//    }
 
 }

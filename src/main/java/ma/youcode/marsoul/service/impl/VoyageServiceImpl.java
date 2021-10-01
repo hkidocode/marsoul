@@ -6,10 +6,11 @@ import ma.youcode.marsoul.exception.EntityNotExistException;
 import ma.youcode.marsoul.repository.VoyageRepository;
 import ma.youcode.marsoul.service.VoyageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,8 +27,8 @@ public class VoyageServiceImpl implements VoyageService {
     }
 
     @Override
-    public List<Voyage> getAllVoyages() {
-        return voyageRepository.findAll();
+    public Page<Voyage> getAllVoyages(Pageable pageable) {
+        return voyageRepository.findAll(pageable);
     }
 
     @Override

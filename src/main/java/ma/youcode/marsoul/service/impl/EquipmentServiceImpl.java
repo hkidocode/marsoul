@@ -6,11 +6,12 @@ import ma.youcode.marsoul.exception.EntityNotExistException;
 import ma.youcode.marsoul.repository.EquipmentRepository;
 import ma.youcode.marsoul.service.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,8 +28,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public List<Equipment> getAllEquipments() {
-        return equipmentRepository.findAll();
+    public Page<Equipment> getAllEquipments(Pageable pageable) {
+        return equipmentRepository.findAll(pageable);
     }
 
     @Override

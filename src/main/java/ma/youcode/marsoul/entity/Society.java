@@ -1,5 +1,6 @@
 package ma.youcode.marsoul.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,7 +29,6 @@ public class Society extends AuditModel {
     private Long id;
 
     @Column(name = "name", length = 240, nullable = false)
-    @NotBlank(message = "Name is required")
     @Size(min=3, message="Name : minimum 3 characters")
     private String name;
 
@@ -37,34 +37,29 @@ public class Society extends AuditModel {
     private String image;
 
     @Column(name = "bus_count", nullable = false)
-    @NotBlank(message = "Bus count is required")
     @Positive(message="Bus count should be greater than 0")
     private Integer busCount;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "society")
     private List<Bus> buses = new ArrayList<>();
 
-//    @OneToMany(targetEntity = User.class)
-//    @JoinColumn(name = "user_id")
-//    private List<User> people = new ArrayList<>();
+    @JsonIgnore
+    @OneToMany(targetEntity = User.class)
+    private List<User> people = new ArrayList<>();
 
 
-    public Society(String name, List<Bus> buses) {
-        this.name = name;
-        this.busCount = buses.size();
-        this.image = image;
-        this.buses = buses;
-    }
-
-    public Society(String name, Integer busCount) {
+    public Society(String name, Integer busCount, String image) {
         this.name = name;
         this.busCount = busCount;
+        this.image  = image;
     }
 
-    public Society(Long id, String name, Integer busCount) {
+    public Society(Long id, String name, Integer busCount, String image) {
         this.id = id;
         this.name = name;
         this.busCount = busCount;
+        this.image = image;
     }
 
 }

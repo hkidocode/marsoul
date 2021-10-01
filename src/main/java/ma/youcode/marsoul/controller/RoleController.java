@@ -6,12 +6,13 @@ import ma.youcode.marsoul.service.RoleService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -25,9 +26,10 @@ public class RoleController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<Collection<RoleDTO>> getAllRoles() {
-        Collection<Role> allRoles = roleService.getAllRoles();
-        return ResponseEntity.ok().body(modelMapper.map(allRoles, new TypeToken<List<RoleDTO>>(){}.getType()));
+    public ResponseEntity<Page<RoleDTO>> getAllRoles(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Role> allRoles = roleService.getAllRoles(pagingSort);
+        return ResponseEntity.ok().body(modelMapper.map(allRoles, new TypeToken<Page<RoleDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

@@ -6,11 +6,13 @@ import ma.youcode.marsoul.service.VoyageService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -24,9 +26,11 @@ public class VoyageController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<VoyageDTO>> getAllVoyages() {
-        List<Voyage> allVoyages = voyageService.getAllVoyages();
-        return ResponseEntity.ok().body(modelMapper.map(allVoyages, new TypeToken<List<VoyageDTO>>(){}.getType()));
+    public ResponseEntity<Page<VoyageDTO>> getAllVoyages(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 7, Sort.by(Sort.Direction.DESC, "id"));
+        Page<Voyage> allVoyages = voyageService.getAllVoyages(pagingSort);
+        return ResponseEntity.ok().body(modelMapper.map(allVoyages, new TypeToken<Page<VoyageDTO>>() {
+        }.getType()));
     }
 
     @GetMapping("/{id}")

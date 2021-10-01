@@ -15,6 +15,9 @@ import ma.youcode.marsoul.service.RefreshTokenService;
 import ma.youcode.marsoul.service.UserService;
 import ma.youcode.marsoul.service.VerificationTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -75,8 +78,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public Page<User> getAllUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @Override
@@ -183,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String loginAccount(LoginRequest loginRequest) {
+    public HttpHeaders loginAccount(LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
         // to check the user is logged in or not
@@ -196,7 +199,7 @@ public class UserServiceImpl implements UserService {
         // set last login date
         user.setLastLoginDate(LocalDateTime.now());
         // generate access token
-        return jwtProvider.generateToken(userDetails);
+        return getJwtHeader(userDetails);
     }
 
     @Override
@@ -238,6 +241,14 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new PasswordNotMatchException("Password does not matches");
         }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     private void verifyResetPassword(String token) {
@@ -298,11 +309,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User getUser() {
-        return user;
+    private HttpHeaders getJwtHeader(CustomUserDetails user) {
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Jwt-Token", jwtProvider.generateToken(user));
+        return httpHeaders;
     }
 
-    public void setUser(User user) {
-        this.user = user;
-    }
 }

@@ -10,8 +10,7 @@ import ma.youcode.marsoul.enums.VoyageStatus;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -36,20 +35,13 @@ public class Voyage extends AuditModel{
     @Column(name = "status")
     private VoyageStatus status;
 
-    @ManyToMany
-    @JoinTable(name = "bus_voyages",
-            joinColumns = @JoinColumn(name = "voyage_id"),
-            inverseJoinColumns = @JoinColumn(name = "bus_id"))
-    private List<Bus> buses = new ArrayList<>();
+    @NotBlank(message = "Voyage date is required")
+    @Column(name = "voyage_date", nullable = false)
+    private Date voyageDate;
 
-    public Voyage(Integer seatPosition, VoyageStatus status) {
+    public Voyage(Integer seatPosition, VoyageStatus status, Date voyageDate) {
         this.seatPosition = seatPosition;
         this.status = status;
-    }
-
-    public Voyage(Long id, Integer seatPosition, VoyageStatus status) {
-        this.id = id;
-        this.seatPosition = seatPosition;
-        this.status = status;
+        this.voyageDate = voyageDate;
     }
 }

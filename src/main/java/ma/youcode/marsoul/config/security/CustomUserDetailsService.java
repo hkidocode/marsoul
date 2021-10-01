@@ -30,7 +30,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> userByEmail = userRepository.findByEmail(email);
 
         if (!userByEmail.isPresent()) {
-            throw new EntityNotExistException("User does not exist");
+            throw new EntityNotExistException("Email not found");
         } else {
             User user = userByEmail.get();
 

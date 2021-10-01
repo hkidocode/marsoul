@@ -1,6 +1,7 @@
 package ma.youcode.marsoul.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,10 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
 
 @Setter
 @Getter
@@ -25,6 +29,7 @@ public class User extends AuditModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id", nullable = false, updatable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @NotBlank(message = "First name is required")
@@ -49,14 +54,17 @@ public class User extends AuditModel {
     private String email;
 
     @Column(name = "join_date", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private LocalDateTime joinDate = LocalDateTime.now();
 
     @Column(name = "last_login_date")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private LocalDateTime lastLoginDate;
 
     @NotBlank(message = "Password is required")
     @Pattern(regexp="^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$", message="Your password must be : more than 8 chars, at least one number and at least one special character")
     @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "enabled", nullable = false)

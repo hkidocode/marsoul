@@ -7,6 +7,10 @@ import ma.youcode.marsoul.message.MessageResponse;
 import ma.youcode.marsoul.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +23,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Collection;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/marsoul/api/v1/users")
 public class UserController {
@@ -33,8 +35,9 @@ public class UserController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<Collection<User>> getAllUsers() {
-        Collection<User> allUsers = userService.getAllUsers();
+    public ResponseEntity<Page<User>> getAllUsers(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "id"));
+        Page<User> allUsers = userService.getAllUsers(pagingSort);
         return ResponseEntity.ok().body(allUsers);
     }
 

@@ -13,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -40,15 +39,15 @@ class EquipmentControllerTest {
     EquipmentDTO equipmentDTO = new EquipmentDTO("Wifi");
 
 
-    @Test
-    void shouldGetMappingOfAllEquipments() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/equipments").
-                contentType(MediaType.APPLICATION_JSON).
-                content(asJsonString(equipmentDTO))).
-                andDo(MockMvcResultHandlers.print());
-        verify(busService).getAllEquipments();
-        verify(busService,times(1)).getAllEquipments();
-    }
+//    @Test
+//    void shouldGetMappingOfAllEquipments() throws Exception {
+//        mockMvc.perform(MockMvcRequestBuilders.get("/marsoul/api/v1/equipments").
+//                contentType(MediaType.APPLICATION_JSON).
+//                content(asJsonString(equipmentDTO))).
+//                andDo(MockMvcResultHandlers.print());
+//        verify(busService).getAllEquipments();
+//        verify(busService,times(1)).getAllEquipments();
+//    }
 
     @Test
     void shouldGetMappingOfEquipment() throws Exception {

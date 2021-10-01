@@ -6,11 +6,13 @@ import ma.youcode.marsoul.service.SocietyService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -24,9 +26,11 @@ public class SocietyController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<SocietyDTO>> getAllSocieties() {
-        List<Society> allSocieties = societyService.getAllSocieties();
-        return ResponseEntity.ok().body(modelMapper.map(allSocieties, new TypeToken<List<SocietyDTO>>(){}.getType()));
+    public ResponseEntity<Page<SocietyDTO>> getAllSocieties(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 9, Sort.by(Sort.Direction.ASC, "name"));
+        Page<Society> allSocieties = societyService.getAllSocieties(pagingSort);
+        return ResponseEntity.ok().body(modelMapper.map(allSocieties, new TypeToken<Page<SocietyDTO>>() {
+        }.getType()));
     }
 
     @GetMapping("/{id}")

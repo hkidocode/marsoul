@@ -39,11 +39,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .authorizeRequests()
                 .antMatchers("/marsoul/api/v1/users*",
-//                             "/marsoul/api/v1/roles*",
+                             "/marsoul/api/v1/roles*",
                              "/marsoul/api/v1/buses*",
                              "/marsoul/api/v1/societies*",
                              "/marsoul/api/v1/voyages*",
-                             "/marsoul/api/v1/equipments*").hasAuthority("ROLE_ADMIN")
+                             "/marsoul/api/v1/equipments*"
+                ).hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.POST, "/marsoul/api/v1/voyages*").hasAuthority("ROLE_USER")
                 .antMatchers(HttpMethod.DELETE, "/marsoul/api/v1/voyages*").hasAuthority("ROLE_USER")
                 .antMatchers("/marsoul/api/v1/auth*").permitAll()

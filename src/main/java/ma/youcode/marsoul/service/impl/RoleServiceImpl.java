@@ -6,10 +6,11 @@ import ma.youcode.marsoul.exception.EntityNotExistException;
 import ma.youcode.marsoul.repository.RoleRepository;
 import ma.youcode.marsoul.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -26,8 +27,8 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Collection<Role> getAllRoles() {
-        return roleRepository.findAll();
+    public Page<Role> getAllRoles(Pageable pageable) {
+        return roleRepository.findAll(pageable);
     }
 
     @Override

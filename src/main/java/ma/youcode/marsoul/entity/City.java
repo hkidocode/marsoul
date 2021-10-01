@@ -7,27 +7,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "equipments")
+@Table(name = "cities")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Equipment extends AuditModel {
+public class City {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "equipment_id", nullable = false, updatable = false)
-    private Integer id;
+    @Column(name = "city_id", nullable = false, updatable = false)
+    private Long id;
 
-    @Size(min=4, message="Name : minimum 4 characters")
-    @Column(name = "name", length = 240, nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    public Equipment(String name) {
-        this.name = name;
-    }
 }

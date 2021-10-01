@@ -6,11 +6,13 @@ import ma.youcode.marsoul.service.EquipmentService;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @CrossOrigin
 @RestController
@@ -24,9 +26,10 @@ public class EquipmentController {
     private ModelMapper modelMapper;
 
     @GetMapping
-    public ResponseEntity<List<EquipmentDTO>> getAllEquipments() {
-        List<Equipment> allEquipments = equipmentService.getAllEquipments();
-            return ResponseEntity.ok().body(modelMapper.map(allEquipments, new TypeToken<List<EquipmentDTO>>(){}.getType()));
+    public ResponseEntity<Page<EquipmentDTO>> getAllEquipments(@RequestParam(name = "page", required = false, defaultValue = "0") int page) {
+        Pageable pagingSort = PageRequest.of(page, 10, Sort.by(Sort.Direction.ASC, "name"));
+        Page<Equipment> allEquipments = equipmentService.getAllEquipments(pagingSort);
+            return ResponseEntity.ok().body(modelMapper.map(allEquipments, new TypeToken<Page<EquipmentDTO>>(){}.getType()));
     }
 
     @GetMapping("/{id}")

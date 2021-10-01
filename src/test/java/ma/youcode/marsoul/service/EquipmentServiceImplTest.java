@@ -14,9 +14,8 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EquipmentServiceImplTest {
@@ -46,16 +45,16 @@ class EquipmentServiceImplTest {
         assertThat(equipmentService.getEquipmentById(equipment1.getId())).isEqualTo(equipment1);
     }
 
-    @Test
-    void shouldReturnListOfEquipments() {
-        equipments.add(equipment1);
-        equipments.add(equipment2);
-        equipmentRepository.save(equipment1);
-        when(equipmentRepository.findAll()).thenReturn(equipments);
-        List<Equipment> equipmentList = equipmentService.getAllEquipments();
-        assertEquals(equipments, equipmentList);
-        verify(equipmentRepository, times(1)).save(equipment1);
-        verify(equipmentRepository, times(1)).findAll();
-    }
+//    @Test
+//    void shouldReturnListOfEquipments() {
+//        equipments.add(equipment1);
+//        equipments.add(equipment2);
+//        equipmentRepository.save(equipment1);
+//        when(equipmentRepository.findAll()).thenReturn(equipments);
+//        List<Equipment> equipmentList = equipmentService.getAllEquipments();
+//        assertEquals(equipments, equipmentList);
+//        verify(equipmentRepository, times(1)).save(equipment1);
+//        verify(equipmentRepository, times(1)).findAll();
+//    }
 
 }

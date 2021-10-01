@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ma.youcode.marsoul.config.security.CustomUserDetails;
+import org.springframework.http.HttpHeaders;
 
 @Getter
 @Setter
@@ -11,8 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AuthenticationResponse {
 
-    private String accessToken;
-    private String refreshToken;
-    private String email;
+    private HttpHeaders accessToken;
+    private CustomUserDetails userDetails;
 
 }

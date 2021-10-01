@@ -12,5 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class EquipmentDTO {
+
     private String name;
+
 }

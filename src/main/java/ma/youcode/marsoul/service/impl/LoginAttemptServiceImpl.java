@@ -47,7 +47,7 @@ public class LoginAttemptServiceImpl implements LoginAttemptService {
         }
         // update user attempts
         loginAttemptCache.put(email, attempts);
-        throw new BadCredentialsException("Username or password is incorrect. Please try again");
+        throw new BadCredentialsException("Email or password is incorrect. Please try again");
     }
 
     // to check how many user are try to login
